@@ -66,7 +66,7 @@ export const CanvasProvider = ({ children }) => {
     } else if (navControl === 'Save') {
       saveCanvasData();
       setNavControl('Brush'); // Reset navControl after saving
-    } else if (navControl === 'Load') {
+    } else if (navControl === 'Loaded') {
       loadCanvasData();
       setNavControl('Brush'); // Reset navControl after loading
     } else if (navControl === 'Delete') {
@@ -160,22 +160,36 @@ export const CanvasProvider = ({ children }) => {
   };
 
   // Erasing functionality
-  const drawWithEraser = ({ nativeEvent }) => {
-    if (!isDrawing) {
-      return;
-    }
+const drawWithEraser = ({ nativeEvent }) => {
+  if (!isDrawing) {
+    return;
+  }
 
-    const { offsetX, offsetY } = nativeEvent;
-    contextRef.current.clearRect(offsetX - brushCurrentSize / 2, offsetY - brushCurrentSize / 2, brushCurrentSize, brushCurrentSize);
+  const { offsetX, offsetY } = nativeEvent;
 
-    // Update the drawnArray with the erased path
-    setDrawnArray(prevDrawnArray => {
-      const updatedArray = [...prevDrawnArray, { points: [{ x: offsetX, y: offsetY }], color: 'white', size: brushCurrentSize }];
-      return updatedArray;
-    });
+  // Use the background color to effectively erase
+  const eraserColor = bucketColor;
 
-    setCurrentPath(prevPath => [...prevPath, { x: offsetX, y: offsetY }]);
-  };
+  contextRef.current.fillStyle = eraserColor;
+  contextRef.current.fillRect(
+    offsetX - brushCurrentSize / 2,
+    offsetY - brushCurrentSize / 2,
+    brushCurrentSize,
+    brushCurrentSize
+  );
+
+  // Update the drawnArray with the erased path
+  setDrawnArray((prevDrawnArray) => {
+    const updatedArray = [
+      ...prevDrawnArray,
+      { points: [{ x: offsetX, y: offsetY }], color: eraserColor, size: brushCurrentSize },
+    ];
+    return updatedArray;
+  });
+
+  setCurrentPath((prevPath) => [...prevPath, { x: offsetX, y: offsetY }]);
+};
+
 
   const startErasing = ({ nativeEvent }) => {
     startDrawing({ nativeEvent });
