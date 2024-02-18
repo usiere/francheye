@@ -10,7 +10,6 @@ const AppProvider = ({ children }) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [drawnArray, setDrawnArray] = useState([]);
   const [navControl, setNavControl] = useState('Brush');
-  // Add other state variables and functions as needed
 
   return (
     <AppContext.Provider
@@ -29,7 +28,6 @@ const AppProvider = ({ children }) => {
         setDrawnArray,
         navControl,
         setNavControl
-        // Add other state variables and functions as needed
       }}
     >
       {children}

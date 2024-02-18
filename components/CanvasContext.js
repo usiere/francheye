@@ -206,7 +206,7 @@ const drawWithEraser = ({ nativeEvent }) => {
   const clearCanvas = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    context.fillStyle = bucketColor; // Use your preferred background color
+    context.fillStyle = bucketColor;
     context.fillRect(0, 0, canvas.width, canvas.height);
     setDrawnArray([]); // Clear the drawnArray
   };
