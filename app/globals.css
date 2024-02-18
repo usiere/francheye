@@ -52,7 +52,7 @@ body {
 
 .brush {
   /* background-color: rgb(114, 114, 114); */
-  height: 44px;
+  /* height: 44px; */
   /* width: 345px; */
 }
 
@@ -105,18 +105,6 @@ body {
   width: 10px;
   height: 10px;
   background: rgb(47, 47, 47);
-}
-
-/* JS Color */
-.jscolor {
-  border-style: solid;
-  border-radius: 5px;
-  height: 35px;
-  width: 120px;
-  margin-left: 3px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
 }
 
 /* Canvas */

@@ -4,7 +4,7 @@ import React, { useContext, useState, useRef, useEffect } from 'react';
 import AppContext from '../context/AppContext';
 import ColorPickerComponent from './reuse/ColorPicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBrush, faEraser, faRefresh, faDownload, faTrashAlt, faUpload, faSave, faFillDrip } from '@fortawesome/free-solid-svg-icons'
+import { faPaintBrush, faEraser, faRefresh, faDownload, faTrashAlt, faUpload, faSave, faFillDrip } from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -65,7 +65,7 @@ const Topbar = ({
       </div>
       {/* Brush */}
       <div className="brush tool">
-        <span className='icon-box' onClick={() => handleNavControl('Brush')}> <FontAwesomeIcon icon={faBrush} /> </span>
+        <span className='icon-box' onClick={() => handleNavControl('Brush')}> <FontAwesomeIcon icon={faPaintBrush} /> </span>
         <span className='color-box' onClick={handleToggleColorPicker1} style={{ backgroundColor: brushCurrentColor }}>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
         {/* Brush Color Picker */}
