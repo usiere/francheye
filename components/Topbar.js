@@ -1,9 +1,11 @@
 'use client'
 
-// components/Topbar.js
-import React, { useContext } from 'react';
-import useSharedState from './useSharedState';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import AppContext from '../context/AppContext';
+import ColorPickerComponent from './reuse/ColorPicker';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBrush, faEraser, faRefresh, faDownload, faTrashAlt, faUpload, faSave, faFillDrip } from '@fortawesome/free-solid-svg-icons'
+
 
 
 const Topbar = ({
@@ -13,16 +15,44 @@ const Topbar = ({
     onCanvasClear();
   };
 
-  // Additional functions...
 
-  const { brushCurrentSize, setBrushCurrentSize, brushCurrentColor, setBrushCurrentColor, bucketColor, setBucketColor } = useContext(AppContext);
+  const [showColorPicker1, setShowColorPicker1] = useState(false);
+  const [showColorPicker2, setShowColorPicker2] = useState(false);
 
-  // const { brushCurrentSize, setBrushCurrentSize } = useSharedState();
-  // const { bucketColor, setBucketColor } = useSharedState();
-  // const { brushCurrentColor, setBrushCurrentColor } = useSharedState();
-  // const { isEraser, setIsEraser } = useSharedState();
-  // const { isMouseDown, setIsMouseDown } = useSharedState();
-  // const { drawnArray, setDrawnArray } = useSharedState();
+  const colorPicker1Ref = useRef(null);
+  const colorPicker2Ref = useRef(null);
+
+  const handleToggleColorPicker1 = () => {
+    setShowColorPicker1(!showColorPicker1);
+  };
+
+  const handleToggleColorPicker2 = () => {
+    setShowColorPicker2(!showColorPicker2);
+  };
+
+  const { brushCurrentSize, setBrushCurrentSize, brushCurrentColor, setBrushCurrentColor, bucketColor, setBucketColor, navControl, setNavControl } = useContext(AppContext);
+
+  const handleNavControl = (control) => {
+    setNavControl(control)
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        (colorPicker1Ref.current && !colorPicker1Ref.current.contains(event.target)) ||
+        (colorPicker2Ref.current && !colorPicker2Ref.current.contains(event.target))
+      ) {
+        setShowColorPicker1(false);
+        setShowColorPicker2(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [colorPicker1Ref, colorPicker2Ref]);
 
 
   return (
@@ -30,22 +60,38 @@ const Topbar = ({
       {/* Active Tool */}
       <div className="active-tool">
         <span id="active-tool" title="Active Tool">
-          Brush
+          {navControl}
         </span>
       </div>
       {/* Brush */}
       <div className="brush tool">
-        <i className="fas fa-brush" id="brush" title="Brush"></i>
+        <span className='icon-box' onClick={() => handleNavControl('Brush')}> <FontAwesomeIcon icon={faBrush} /> </span>
+        <span className='color-box' onClick={handleToggleColorPicker1} style={{ backgroundColor: brushCurrentColor }}>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+        {/* Brush Color Picker */}
+        {showColorPicker1 && (
+          <div ref={colorPicker1Ref} className="color-picker-container" style={{ position: 'absolute', top: '100%', left: '0' }}>
+            <br></br>
+            <ColorPickerComponent
+              initialColor={brushCurrentColor}
+              handleColorChange={setBrushCurrentColor}
+              label="Brush Color Picker"
+            />
+          </div>
+        )}
+
         <input
+          onClick={handleToggleColorPicker1}
           value={brushCurrentColor}
           onChange={(e) => {
             console.log('Changing color:', brushCurrentColor);
-            setBrushCurrentColor(e.target.value)}
+            setBrushCurrentColor(e.target.value)
+          }
           }
           className="jscolor"
           id="brush-color"
         />
-    
+
         <span className="size" id="brush-size" title="Brush Size">
           {brushCurrentSize}
         </span>
@@ -61,8 +107,23 @@ const Topbar = ({
       </div>
       {/* Bucket */}
       <div className="bucket tool">
-        <i className="fas fa-fill-drip" title="Background Color"></i>
+        <span className='icon-box' onClick={() => handleNavControl('Fill')}> <FontAwesomeIcon icon={faFillDrip} /> </span>
+
+        <span className='color-box' onClick={handleToggleColorPicker2} style={{ backgroundColor: bucketColor }}>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+        {/* Bucket Color Picker */}
+        {showColorPicker2 && (
+          <div ref={colorPicker2Ref} className="color-picker-container" style={{ position: 'absolute', top: '100%', left: '0' }}>
+            <br></br>
+            <ColorPickerComponent
+              initialColor={bucketColor}
+              handleColorChange={setBucketColor}
+              label="Background Color Picker"
+            />
+          </div>
+        )}
         <input
+          onClick={handleToggleColorPicker2}
           value={bucketColor}
           onChange={(e) => setBucketColor(e.target.value)}
           className="jscolor"
@@ -70,41 +131,29 @@ const Topbar = ({
         />
       </div>
       {/* Eraser */}
-      <div className="tool">
-        <i className="fas fa-eraser" id="eraser" title="Eraser"></i>
+      <div className="tool" onClick={() => handleNavControl('Eraser')}>
+        <span className='icon-box' >  <FontAwesomeIcon icon={faEraser} /> </span>
       </div>
       {/* Clear Canvas */}
-      <div className="tool" onClick={handleCanvasClear}>
-        <i className="fas fa-undo-alt" id="clear-canvas" title="Clear"></i>
+      <div className="tool">
+        <span className='icon-box' onClick={() => handleNavControl('Clear')}>  <FontAwesomeIcon icon={faRefresh} />  </span>
       </div>
       {/* Save Local Storage */}
       <div className="tool">
-        <i
-          className="fas fa-download"
-          id="save-storage"
-          title="Save Local Storage"
-        ></i>
+        <span className='icon-box' onClick={() => handleNavControl('Save')}> <FontAwesomeIcon icon={faDownload} /></span>
       </div>
       {/* Load Local Storage */}
       <div className="tool">
-        <i
-          className="fas fa-upload"
-          id="load-storage"
-          title="Load Local Storage"
-        ></i>
+        <span className='icon-box' onClick={() => handleNavControl('Loaded')}>  <FontAwesomeIcon icon={faUpload} /> </span>
       </div>
       {/* Clear Local Storage */}
       <div className="tool">
-        <i
-          className="fas fa-trash-alt"
-          id="clear-storage"
-          title="Clear Local Storage"
-        ></i>
+        <span className='icon-box' onClick={() => handleNavControl('Delete')}> <FontAwesomeIcon icon={faTrashAlt} /> </span>
       </div>
       {/* Download Image */}
       <div className="tool">
         <a id="download">
-          <i className="far fa-save" title="Save Image File"></i>
+          <span className='icon-box' onClick={() => handleNavControl('Download')}> <FontAwesomeIcon icon={faSave} />  </span>
         </a>
       </div>
     </div>

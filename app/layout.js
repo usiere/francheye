@@ -1,5 +1,5 @@
 'use client'
-// Import necessary dependencies
+
 import { Inter } from 'next/font/google';
 import "./globals.css";
 import Topbar from '../components/Topbar';
