@@ -12,8 +12,7 @@ export const CanvasProvider = ({ children }) => {
   const contextRef = useRef(null);
   
 
-  const { brushCurrentSize, setBrushCurrentSize, brushCurrentColor, setBrushCurrentColor } = useContext(AppContext);
-const { bucketColor, setBucketColor } = useSharedState();
+  const { brushCurrentSize, setBrushCurrentSize, brushCurrentColor, setBrushCurrentColor, bucketColor, setBucketColor } = useContext(AppContext);
 const { isEraser, setIsEraser } = useSharedState();
 const { isMouseDown, setIsMouseDown } = useSharedState();
 const { drawnArray, setDrawnArray } = useSharedState();
@@ -36,7 +35,7 @@ const prepareCanvas = () => {
   const context = canvas.getContext("2d");
   context.scale(2, 2);
   context.lineCap = "round";
-  context.fillStyle = "white";
+  context.fillStyle = bucketColor;
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   // Draw the existing paths
@@ -62,7 +61,7 @@ const prepareCanvas = () => {
 useEffect(() => {
   setCurrentPath([]);
   prepareCanvas();
-}, [brushCurrentColor, brushCurrentSize, drawnArray]);
+}, [brushCurrentColor, brushCurrentSize, bucketColor, drawnArray]);
 
 const startDrawing = ({ nativeEvent }) => {
   const { offsetX, offsetY } = nativeEvent;

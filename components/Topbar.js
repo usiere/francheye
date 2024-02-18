@@ -15,7 +15,7 @@ const Topbar = ({
 
   // Additional functions...
 
-  const { brushCurrentSize, setBrushCurrentSize, brushCurrentColor, setBrushCurrentColor, } = useContext(AppContext);
+  const { brushCurrentSize, setBrushCurrentSize, brushCurrentColor, setBrushCurrentColor, bucketColor, setBucketColor } = useContext(AppContext);
 
   // const { brushCurrentSize, setBrushCurrentSize } = useSharedState();
   // const { bucketColor, setBucketColor } = useSharedState();
@@ -60,7 +60,7 @@ const Topbar = ({
         />
       </div>
       {/* Bucket */}
-      {/* <div className="bucket tool">
+      <div className="bucket tool">
         <i className="fas fa-fill-drip" title="Background Color"></i>
         <input
           value={bucketColor}
@@ -68,7 +68,7 @@ const Topbar = ({
           className="jscolor"
           id="bucket-color"
         />
-      </div> */}
+      </div>
       {/* Eraser */}
       <div className="tool">
         <i className="fas fa-eraser" id="eraser" title="Eraser"></i>
