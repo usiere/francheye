@@ -136,6 +136,7 @@ canvas#canvas {
 .color-box{
   width: 20px;
   height: 20px;
+  border-radius: 20%;
 }
 
 .icon-box{
@@ -151,6 +152,8 @@ canvas#canvas {
   font-size: 20px;
   user-select: none;
   cursor: pointer;
+  border-radius: 20%;
+  
 }
 
 .icon-box :hover{

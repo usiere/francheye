@@ -5,7 +5,7 @@ import AppContext from './AppContext';
 const AppProvider = ({ children }) => {
   const [brushCurrentSize, setBrushCurrentSize] = useState(10);
   const [bucketColor, setBucketColor] = useState('#ffffff');
-  const [brushCurrentColor, setBrushCurrentColor] = useState('#000000');
+  const [brushCurrentColor, setBrushCurrentColor] = useState('#00a3ff');
   const [isEraser, setIsEraser] = useState(false);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [drawnArray, setDrawnArray] = useState([]);
